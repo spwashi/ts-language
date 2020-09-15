@@ -1,0 +1,42 @@
+{
+  "name": "@spwashi/language",
+  "author": {
+    "name": "Sam Washington",
+    "url": "https://spwashi.com",
+    "email": "sam@spwashi.com"
+  },
+  "version": "1.0.0",
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
+  "files": [
+    "/dist"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "watch": "nodemon --watch src/grammars/spw/src --exec npm run build",
+    "clean:spw": "node scripts/remove.js --lang=spw",
+    "build:spw": "npm run clean:spw && tsc && npm run compile:spw",
+    "compile:spw": "node scripts/generate.js --lang=spw"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-private-methods": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "@babel/preset-typescript": "^7.8.3",
+    "minify": "^5.1.1",
+    "pegjs": "^0.10.0",
+    "pegjs-util": "^1.4.19",
+    "typescript": "^3.9.7"
+  },
+  "devDependencies": {
+    "@babel/register": "^7.10.5",
+    "@types/jest": "^26.0.0",
+    "@types/pegjs": "^0.10.2",
+    "jest": "^26.0.1",
+    "minimist": "^1.2.5",
+    "nodemon": "^2.0.4"
+  }
+}
