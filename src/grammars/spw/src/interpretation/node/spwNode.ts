@@ -7,14 +7,24 @@ function formatLCO(start: LineColumnOffset) {
 }
 
 export class SpwNode {
-    #_kind: string;
-    #_node: UnhydratedSpwNode;
+    readonly _location: SpwNodeLocation;
+    readonly #_node: UnhydratedSpwNode;
 
     constructor(node: UnhydratedSpwNode) {
         const {kind, location} = node;
         this.#_node            = node;
         this.#_kind            = kind;
-        this.#_location        = location;
+        this._location         = location;
+    }
+
+    #_kind: string;
+
+    get kind(): string {
+        return this.#_kind;
+    }
+
+    set kind(value: string) {
+        this.#_kind = value;
     }
 
     protected _key?: string;
@@ -24,10 +34,12 @@ export class SpwNode {
         return this._key;
     }
 
-    #_location: SpwNodeLocation;
-
     get location(): SpwNodeLocation {
-        return this.#_location;
+        return this._location;
+    }
+
+    static isSpwNode(node: any) {
+        return (node instanceof this) || (node.key && node.kind)
     }
 
     set(key: string, value: SpwNodeKeyValue): this {

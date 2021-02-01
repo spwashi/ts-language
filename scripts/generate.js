@@ -9,10 +9,10 @@ async function run(lang) {
     const parser  = await initSpw();
     const grammar = await generatePegJsFile();
 
-    fs.writeFileSync(
-        path.join(__dirname, '../dist/grammars', lang, 'parser.js'),
-        'const spwParser = ' + parser + ';\nmodule.exports = {spwParser}'
-    )
+    // fs.writeFileSync(
+    //     path.join(__dirname, '../dist/grammars', lang, 'parser.js'),
+    //     'const spwParser = ' + parser + ';\nmodule.exports = {spwParser}'
+    // )
     fs.writeFileSync(
         path.join(__dirname, 'pegjs', `${lang}.pegjs`),
         grammar

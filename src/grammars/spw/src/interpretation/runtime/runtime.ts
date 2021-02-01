@@ -1,15 +1,15 @@
-import {SpwNode} from '../node/spwNode';
+import {SpwNode, SpwNodeKeyValue} from '../node/spwNode';
 import {SpwModule, SpwModuleIdentifier, SpwModuleRegistry} from './spwModule';
 import {RegisterMap, RuntimeRegister} from './register';
 import {incorporate} from '../incorporate';
 import {SpwAnchorNode} from '../node/sub/anchorNode';
 import {SpwStringNode} from '../node/sub/stringNode';
-import {SpwNodeLocation} from '../types';
+import {SpwNodeLocation, UnhydratedSpwNode} from '../types';
 import {SpwPerformanceNode} from '../node/sub/performanceNode';
 
 
 export type Parser = {
-    parse: Function
+    parse: (input: string) => UnhydratedSpwNode
 };
 
 export type SpwNodeIdentifier = string | Symbol;
@@ -45,19 +45,26 @@ class ParsingError implements Error {
 }
 
 export class Runtime implements SpwRuntime {
-    static symbols = {
+    static symbols    = {
         symbol_KeyHaver,
         symbol_LastAcknowledged,
         symbol_All,
         symbol_Performance,
         symbol_Evaluation,
     }
+    public DEBUG_MODE = 0;
 
+    /**
+     * The parser used to generate the un-hydrated
+     * @private
+     */
     private readonly parser: Parser;
+
     private readonly trees: Map<SpwModuleIdentifier, SpwNode | SpwNode[] | Error> =
                          new Map<SpwModuleIdentifier, SpwNode | SpwNode[] | Error>()
-    private readonly moduleRegistry: SpwModuleRegistry                            = new SpwModuleRegistry();
-    private readonly loadedModules                                                = new Set<SpwModule>();
+
+    private readonly moduleRegistry: SpwModuleRegistry = new SpwModuleRegistry();
+    private readonly loadedModules                     = new Set<SpwModule>();
 
     constructor(parser: Parser) {
         if (typeof parser.parse !== 'function') {
@@ -131,8 +138,8 @@ export class Runtime implements SpwRuntime {
         await Promise.all(loadModules);
     }
 
-    async module__load(key: SpwModuleIdentifier | SpwModule) {
-        console.log('loading module')
+    async module__load(key: SpwModuleIdentifier | SpwModule): Promise<SpwNodeKeyValue | Error> {
+        this.DEBUG_MODE && console.log('loading module')
         const id = key instanceof SpwModule
                    ? key.identifier
                    : key;
@@ -141,26 +148,28 @@ export class Runtime implements SpwRuntime {
         const spwModule = this.moduleRegistry.modules.get(id) as SpwModule;
         const src       = spwModule.src;
 
-        console.log('parsing module')
+        this.DEBUG_MODE && console.log('parsing module')
         let parsed: any;
         try {
             parsed = src ? this.parser.parse(src) : null;
         } catch (e) {
             throw new ParsingError(e)
         }
-        console.log('module parsed')
+        this.DEBUG_MODE && console.log('module parsed')
 
         this.loadedModules.add(spwModule);
-
-        const hydrated = parsed ? await incorporate(parsed, {
-                                    absorb:   this.absorb.bind(this),
-                                    location: {moduleID: spwModule.identifier},
-                                })
-                                : new Error('Could not parse');
+        let hydrated: string | number | SpwNode | SpwNodeKeyValue[] | Error;
+        if (parsed) {
+            hydrated = await incorporate(parsed, {
+                absorb:   this.absorb.bind(this),
+                location: {moduleID: spwModule.identifier},
+            });
+        } else {
+            throw new Error('Could not parse');
+        }
 
         this.trees.set(id, hydrated as SpwNode | SpwNode[])
 
-        console.log('module loaded')
         return hydrated;
     }
 

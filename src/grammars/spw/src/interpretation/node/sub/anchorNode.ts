@@ -11,5 +11,4 @@ export class SpwAnchorNode extends SpwNode {
         super.set(key, value);
         return this;
     }
-
 }
