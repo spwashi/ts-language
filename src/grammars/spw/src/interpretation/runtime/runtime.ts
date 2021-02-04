@@ -9,7 +9,8 @@ import {SpwPerformanceNode} from '../node/sub/performanceNode';
 
 
 export type Parser = {
-    parse: (input: string) => UnhydratedSpwNode
+    parse: (input: string) => UnhydratedSpwNode,
+    SyntaxError: Error
 };
 
 export type SpwNodeIdentifier = string | Symbol;

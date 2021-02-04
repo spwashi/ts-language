@@ -1,25 +1,30 @@
 {
-  "name": "@spwashi/language",
-  "version": "1.0.2",
-  "description": "Package to ease the development of new grammars using javascript",
-  "main": "dist/index.js",
+  "author": "Samuel Washington",
+  "bugs": {
+    "url": "https://github.com/spwashi/ts-language/issues"
+  },
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-optional-chaining": "^7.12.1",
+    "@babel/plugin-proposal-private-methods": "^7.12.1",
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-typescript": "^7.12.7",
+    "@types/jest": "^26.0.20",
+    "@types/pegjs": "^0.10.2",
+    "dedent": "^0.7.0",
+    "jest": "^26.6.3",
     "minimist": "^1.2.5",
     "pegjs": "^0.10.0",
     "terser": "^4.8.0",
+    "tslib": "^2.1.0",
     "typescript": "^3.9.7"
   },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "generate:spw": "node scripts/generate.js",
-    "build": "tsc",
-    "build:all": "tsc"
+  "description": "Package to ease the development of new grammars using javascript",
+  "devDependencies": {
+    "@types/dedent": "^0.7.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/spwashi/ts-language.git"
-  },
+  "homepage": "https://github.com/spwashi/ts-language#readme",
   "keywords": [
     "js",
     "ts",
@@ -29,10 +34,18 @@
     "expression",
     "grammar"
   ],
-  "author": "Samuel Washington",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/spwashi/ts-language/issues"
+  "main": "dist/index.js",
+  "name": "@spwashi/language",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spwashi/ts-language.git"
   },
-  "homepage": "https://github.com/spwashi/ts-language#readme"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate:spw": "node scripts/generate.js",
+    "build": "tsc",
+    "build:all": "node scripts/generate.js; tsc"
+  },
+  "version": "1.0.2"
 }

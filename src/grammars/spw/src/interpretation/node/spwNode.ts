@@ -13,18 +13,18 @@ export class SpwNode {
     constructor(node: UnhydratedSpwNode) {
         const {kind, location} = node;
         this.#_node            = node;
-        this.#_kind            = kind;
+        this._kind             = kind;
         this._location         = location;
     }
 
-    #_kind: string;
+    protected _kind: string;
 
     get kind(): string {
-        return this.#_kind;
+        return this._kind;
     }
 
     set kind(value: string) {
-        this.#_kind = value;
+        this._kind = value;
     }
 
     protected _key?: string;
@@ -38,9 +38,6 @@ export class SpwNode {
         return this._location;
     }
 
-    static isSpwNode(node: any) {
-        return (node instanceof this) || (node.key && node.kind)
-    }
 
     set(key: string, value: SpwNodeKeyValue): this {
         switch (key) {
@@ -75,3 +72,6 @@ export class SpwNode {
     }
 }
 
+export function isSpwNode(node: any): node is SpwNode {
+    return (node instanceof SpwNode) || (node.key && node.kind);
+}
