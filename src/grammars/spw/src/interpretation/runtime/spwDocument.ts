@@ -1,6 +1,9 @@
 export type SpwModuleIdentifier = string;
 
-export class SpwModule {
+/**
+ * Represents
+ */
+export class SpwDocument {
     private readonly _identifier: SpwModuleIdentifier;
     private readonly _src: string | null = null;
 
@@ -18,14 +21,14 @@ export class SpwModule {
     }
 }
 
-export class SpwModuleRegistry {
-    private _modules = new Map<SpwModuleIdentifier, SpwModule>();
+export class SpwDocumentRegistry {
+    private _modules = new Map<SpwModuleIdentifier, SpwDocument>();
 
     get modules() {
         return this._modules;
     }
 
-    register(spwModule: SpwModule) {
+    register(spwModule: SpwDocument) {
         this._modules.set(spwModule.identifier, spwModule)
 
         return this;

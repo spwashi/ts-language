@@ -1,9 +1,12 @@
 import {SpwNode, SpwNodeKeyValue} from '../spwNode';
 
-export class SpwPerspectiveNode extends SpwNode {
+export class SpwEvaluationNode extends SpwNode {
+    get label() {
+        return this._label;
+    }
     private _label?: SpwNode;
 
-    set(key: string, value: SpwNodeKeyValue): this {
+    set(key: keyof this, value: SpwNodeKeyValue): this {
         switch (key) {
             case 'label':
                 this._label = (value as SpwNode);

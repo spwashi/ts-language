@@ -1,11 +1,25 @@
 import {SpwNode, SpwNodeKeyValue} from '../spwNode';
 
 export class SpwNodeNode extends SpwNode {
-    private _node?: SpwNode;
-    private _essence?: SpwNode;
-    private _description?: SpwNode;
+    protected _node?: SpwNode;
 
-    set(key: string, value: SpwNodeKeyValue): this {
+    get node() {
+        return this._node;
+    }
+
+    protected _essence?: SpwNode;
+
+    get essence() {
+        return this._essence;
+    }
+
+    protected _description?: SpwNode;
+
+    get description() {
+        return this._description;
+    }
+
+    set(key: keyof this, value: SpwNodeKeyValue): this {
         switch (key) {
             case 'node':
                 this._node = (value as SpwNode);

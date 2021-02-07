@@ -6,10 +6,24 @@ type ConjunctionArr = Array<SpwStrandTail | SpwNode>;
 
 export class SpwStrandNode extends SpwNode {
     private _head?: SpwNode;
+
+    get head() {
+        return this._head;
+    }
+
     private _tail?: SpwNode;
+
+    get tail() {
+        return this._tail;
+    }
+
     private _conjunction?: ConjunctionArr;
 
-    set(key: string, value: SpwNodeKeyValue): this {
+    get conjunction() {
+        return this._conjunction;
+    }
+
+    set(key: keyof this, value: SpwNodeKeyValue): this {
         switch (key) {
             case 'head':
                 this._head = (value as SpwNode);

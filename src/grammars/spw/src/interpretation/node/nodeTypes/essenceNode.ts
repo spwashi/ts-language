@@ -3,7 +3,7 @@ import {SpwNode, SpwNodeKeyValue} from '../spwNode';
 export class SpwDomainNode extends SpwNode {
     private _body?: string;
 
-    set(key: string, value: SpwNodeKeyValue): this {
+    set(key: keyof this, value: SpwNodeKeyValue): this {
         switch (key) {
             case 'body':
                 this._body = (value as string);

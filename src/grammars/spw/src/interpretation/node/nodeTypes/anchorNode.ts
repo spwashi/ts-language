@@ -7,7 +7,7 @@ export class SpwAnchorNode extends SpwNode {
         return key;
     }
 
-    set(key: string, value: SpwNodeKeyValue): this {
+    set(key: keyof this, value: SpwNodeKeyValue): this {
         super.set(key, value);
         return this;
     }

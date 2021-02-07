@@ -39,7 +39,7 @@ export class SpwNode {
     }
 
 
-    set(key: string, value: SpwNodeKeyValue): this {
+    set(key: keyof this, value: SpwNodeKeyValue): this {
         switch (key) {
             case 'key':
                 this._key = (value as string);

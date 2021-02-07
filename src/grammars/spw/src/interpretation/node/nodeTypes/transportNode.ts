@@ -15,7 +15,7 @@ class TransportBehavior {
 export class SpwTransportNode extends SpwNode {
     private _behavior?: TransportBehavior;
 
-    set(key: string, value: SpwNodeKeyValue): this {
+    set(key: keyof this, value: SpwNodeKeyValue): this {
         switch (key) {
             case 'basis':
                 switch (value) {
