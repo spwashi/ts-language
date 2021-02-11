@@ -3,7 +3,7 @@ import {ParserRuleContext} from './context/parserRuleContext';
 import {initHandlers} from './mutation/string-mutator';
 import serialize from './mutation/serialize';
 import {Serializer} from './mutation/serializer.type';
-import {init} from '../../grammars/spw/src/language/spw';
+import {init} from '../../grammars/spw/src/tokenization';
 
 export async function generateParser(jsPreText: string) {
     const spw                = init();

@@ -9,6 +9,11 @@ export class SpwAnchorNode extends SpwNode {
 
     set(key: keyof this, value: SpwNodeKeyValue): this {
         super.set(key, value);
+        switch (key) {
+            case 'key':
+                this.setProp('nodes', []);
+                break;
+        }
         return this;
     }
 }

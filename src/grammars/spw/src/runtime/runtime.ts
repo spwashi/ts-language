@@ -1,11 +1,11 @@
-import {SpwNode, SpwNodeKeyValue} from '../node/spwNode';
+import {SpwNode, SpwNodeKeyValue} from '../ast/node/spwNode';
 import {SpwDocument, SpwDocumentRegistry, SpwModuleIdentifier} from './spwDocument';
 import {RegisterMap, RuntimeRegister} from './register';
-import {incorporate} from '../incorporate';
-import {SpwAnchorNode} from '../node/nodeTypes/anchorNode';
-import {SpwStringNode} from '../node/nodeTypes/stringNode';
-import {SpwNodeLocation, UnhydratedSpwNode} from '../types';
-import {SpwPerformanceNode} from '../node/nodeTypes/performanceNode';
+import {incorporateNode} from '../ast/incorporateNode';
+import {SpwAnchorNode} from '../ast/node/nodeTypes/anchorNode';
+import {SpwStringNode} from '../ast/node/nodeTypes/stringNode';
+import {SpwNodeLocation, UnhydratedSpwNode} from '../ast/types';
+import {SpwPerformanceNode} from '../ast/node/nodeTypes/performanceNode';
 
 
 export type Parser = {
@@ -204,8 +204,8 @@ export class Runtime implements SpwRuntime {
         let hydrated: string | number | SpwNode | SpwNodeKeyValue[] | Error;
         if (parsed) {
             hydrated =
-                await incorporate(parsed,
-                                  {
+                await incorporateNode(parsed,
+                                      {
                                       absorb:   this.absorb.bind(this),
                                       location: {moduleID: spwModule.identifier},
                                   });

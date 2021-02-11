@@ -1,4 +1,4 @@
-import {LineColumnOffset, SpwNodeLocation, UnhydratedSpwNode} from '../types';
+import {LineColumnOffset, InternalProps, SpwNodeLocation, UnhydratedSpwNode, InternalPropKey} from '../types';
 
 export type SpwNodeKeyValue = string | number | SpwNode | SpwNodeKeyValue[];
 
@@ -6,8 +6,14 @@ function formatLCO(start: LineColumnOffset) {
     return [start.line, start.column].join('|');
 }
 
+
+
 export class SpwNode {
     readonly _location: SpwNodeLocation;
+    readonly _props: InternalProps =
+                 {
+                     nodes: [],
+                 };
     readonly #_node: UnhydratedSpwNode;
 
     constructor(node: UnhydratedSpwNode) {
@@ -15,6 +21,10 @@ export class SpwNode {
         this.#_node            = node;
         this._kind             = kind;
         this._location         = location;
+    }
+
+    get props(): { [p: string]: any } {
+        return this._props;
     }
 
     protected _kind: string;
@@ -38,7 +48,6 @@ export class SpwNode {
         return this._location;
     }
 
-
     set(key: keyof this, value: SpwNodeKeyValue): this {
         switch (key) {
             case 'key':
@@ -48,6 +57,14 @@ export class SpwNode {
         // @ts-ignore
         this[key] = value;
         return this;
+    }
+
+    setProp(key: InternalPropKey, value: InternalProps[InternalPropKey]) {
+        this._props[key] = value;
+    }
+
+    getProp(key: InternalPropKey) {
+        return this._props[key] ?? undefined;
     }
 
     toJSON() {

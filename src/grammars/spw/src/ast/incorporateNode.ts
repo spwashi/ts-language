@@ -23,7 +23,7 @@ async function hydrateNode(node: UnhydratedSpwNode, runtime: HydrationContext) {
                         async ([k, v]) => {
                             const incorporated =
                                       v.kind || Array.isArray(v)
-                                      ? await incorporate(v, runtime)
+                                      ? await incorporateNode(v, runtime)
                                       : v;
 
                             node[k] = incorporated;
@@ -40,9 +40,9 @@ async function hydrateNode(node: UnhydratedSpwNode, runtime: HydrationContext) {
 
 type HydrationInput = UnhydratedSpwNode | UnhydratedSpwNode[] | any;
 
-export async function incorporate(node: HydrationInput, runtime: HydrationContext): Promise<SpwNodeKeyValue> {
+export async function incorporateNode(node: HydrationInput, runtime: HydrationContext): Promise<SpwNodeKeyValue> {
     if (Array.isArray(node)) {
-        const hydrateChild = (node: HydrationInput): Promise<SpwNodeKeyValue> => incorporate(node, runtime);
+        const hydrateChild = (node: HydrationInput): Promise<SpwNodeKeyValue> => incorporateNode(node, runtime);
 
         return Promise.all(node.map(hydrateChild));
     }

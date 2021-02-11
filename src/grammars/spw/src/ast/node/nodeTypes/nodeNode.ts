@@ -21,18 +21,34 @@ export class SpwNodeNode extends SpwNode {
 
     set(key: keyof this, value: SpwNodeKeyValue): this {
         switch (key) {
+            case 'key':
+                break
             case 'node':
                 this._node = (value as SpwNode);
                 return this;
             case 'essence':
                 this._essence = (value as SpwNode);
+                this.setProp('nodes', this._essence.getProp('nodes'));
                 return this;
             case 'description':
                 this._description = (value as SpwNode);
                 return this;
         }
+        this.linkComponents(key);
         super.set(key, value);
         return this;
     }
 
+    private linkComponents(key: keyof this) {
+        if (this._node && this._essence) {
+            this._node.setProp('essence', this._essence);
+            this._node.setProp('#', this._essence);
+            this._essence.setProp('parent', this._node);
+            this._essence.setProp('.[', this._node);
+        }
+        if (this._node && this._description) {
+            this._node.setProp('description', this._description);
+            this._node.setProp('##', this._description);
+        }
+    }
 }

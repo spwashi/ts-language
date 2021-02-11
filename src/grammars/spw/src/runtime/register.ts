@@ -1,4 +1,4 @@
-import {SpwNode} from '../node/spwNode';
+import {SpwNode} from '../ast/node/spwNode';
 import {SpwNodeIdentifier} from './runtime';
 
 type RegisterValue = { item: SpwNode; time: number };

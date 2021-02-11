@@ -15,12 +15,19 @@ class TransportBehavior {
 export class SpwTransportNode extends SpwNode {
     private _behavior?: TransportBehavior;
 
+    private _basis?: '=>';
+
+    get basis() {
+        return this._basis;
+    }
+
     set(key: keyof this, value: SpwNodeKeyValue): this {
         switch (key) {
             case 'basis':
                 switch (value) {
                     case '=>':
-                        this._behavior = new TransportBehavior(value)
+                        this._behavior = new TransportBehavior(value);
+                        this._basis    = value;
                 }
                 return this;
         }
