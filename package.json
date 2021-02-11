@@ -24,9 +24,6 @@
   "devDependencies": {
     "@types/dedent": "^0.7.0"
   },
-  "files": [
-    "dist"
-  ],
   "homepage": "https://github.com/spwashi/ts-language#readme",
   "keywords": [
     "js",
@@ -38,7 +35,7 @@
     "grammar"
   ],
   "license": "ISC",
-  "main": "dist/index.js",
+  "main": "index.js",
   "name": "@spwashi/language",
   "repository": {
     "type": "git",
@@ -50,7 +47,8 @@
     "build": "tsc",
     "copypackage": "cp -rf package.json dist",
     "build:all": "node scripts/generate.js; tsc",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "postpublish": "cp -rf dist/package.json ."
   },
-  "version": "1.2.2"
+  "version": "1.2.3"
 }
