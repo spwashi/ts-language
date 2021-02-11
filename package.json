@@ -48,7 +48,7 @@
     "copypackage": "cp -rf package.json dist",
     "build:all": "node scripts/generate.js; tsc",
     "prepublish": "npm run build",
-    "postpublish": "cp -rf dist/package.json ."
+    "postpublish": "cd dist || true; cp -rf package.json ../"
   },
-  "version": "1.2.3"
+  "version": "1.2.4-1"
 }
