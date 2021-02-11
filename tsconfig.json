@@ -19,7 +19,6 @@
     "scripts"
   ],
   "include": [
-    "generated",
     "src/**/*"
   ]
 }

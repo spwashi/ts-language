@@ -2,7 +2,7 @@
 import dedent from 'dedent';
 import {Parser, Runtime, SpwDocument} from '../../src';
 import {isSpwNode} from '../../src/grammars/spw/src/interpretation/node/spwNode';
-import {spwParser} from '../../generated/spw/parser';
+import {spwParser} from '../../src/generated/spw/parser';
 import {getConceptId} from '../../src/grammars/spw/src/interpretation/runtime/getConceptId';
 
 type Concept = {

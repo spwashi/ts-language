@@ -28,6 +28,6 @@ export {parser as ${lang}Parser};
     const deprecatedPath = path.join(__dirname, '../src/grammars', lang, 'parser.ts');
     fs.writeFileSync(deprecatedPath, parserFile);
 
-    const generatedPath = path.join(__dirname, '../generated', lang, 'parser.ts');
+    const generatedPath = path.join(__dirname, '../src/generated', lang, 'parser.ts');
     fs.writeFileSync(generatedPath, parserFile);
 }
