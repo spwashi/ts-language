@@ -5,6 +5,8 @@ type SpwStrandTail = SpwNode & { node: SpwNodeNode, transport: SpwNode };
 type ConjunctionArr = Array<SpwStrandTail | SpwNode>;
 
 export class SpwStrandNode extends SpwNode {
+    private done = false;
+
     private _head?: SpwNode;
 
     get head() {
@@ -53,25 +55,40 @@ export class SpwStrandNode extends SpwNode {
                 return this;
         }
 
+        this.setNodeProps();
+
+        super.set(key, value);
+        return this;
+    }
+
+    private setNodeProps() {
+        if (this.done) return;
+
         if (this._head && this._tail) {
+            this.done      = true;
+            const nodeList = [this._head];
+
             if (!this._conjunction?.length) {
                 this._head.setProp('next', this._tail)
                 this._tail.setProp('prev', this._head)
             } else {
-                const nodes = []
+                const lastIndex = this._conjunction.length - 1;
                 this._conjunction.reduce(
                     (prev, curr, i) => {
                         curr.setProp('prev', prev);
                         prev.setProp('next', curr);
+                        nodeList.push(curr);
+                        if (i === lastIndex) {
+                            curr.setProp('next', this._tail);
+                            this._tail?.setProp('prev', curr);
+                        }
                         return curr;
                     },
                     this._head,
                 )
             }
-
+            nodeList.push(this._tail);
+            this.setProp('nodes', this._tail);
         }
-
-        super.set(key, value);
-        return this;
     }
 }
