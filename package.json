@@ -24,6 +24,9 @@
   "devDependencies": {
     "@types/dedent": "^0.7.0"
   },
+  "files": [
+    "dist"
+  ],
   "homepage": "https://github.com/spwashi/ts-language#readme",
   "keywords": [
     "js",
@@ -45,7 +48,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "generate:spw": "node scripts/generate.js",
     "build": "tsc",
-    "build:all": "node scripts/generate.js; tsc"
+    "copypackage": "cp -rf package.json dist",
+    "build:all": "node scripts/generate.js; tsc",
+    "prepublish": "npm run build"
   },
   "version": "1.2.2"
 }
