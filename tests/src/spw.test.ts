@@ -109,19 +109,12 @@ test('can generate parser',
          )
          console.log(all, sorted);
 
-         const nodes =
-                   fromEntries(
-                       Object.entries(sorted.domain.objective)
-                             .map(([key, domain]: [string, SpwNode[]]) => {
-                                 return [key,
-                                         domain.map(
-                                             node => {
-                                                 return node.getProp('owner')
-                                             },
-                                         )]
-                             }),
-                   )
-         ;
-         console.log(nodes)
-         debugger;
+         const objectiveAnchorDomains = fromEntries(Object
+                                                        .entries(sorted.domain.objective)
+                                                        .map(([key, domain]: [string, SpwNode[]]) => [key,
+                                                                                                      domain.map(node => node.getProp('owner'))]));
+         const strands = sorted.strand.all.map(strand => strand.getProp('nodes'))
+
+         console.log(strands, objectiveAnchorDomains)
+         ;debugger;
      });

@@ -25,7 +25,8 @@ export class SpwStrandNode extends SpwNode {
         return this._conjunction;
     }
 
-    set(key: keyof this, value: SpwNodeKeyValue): this {
+
+    _internalSet(key: keyof this, value: SpwNodeKeyValue) {
         switch (key) {
             case 'head':
                 this._head = (value as SpwNode);
@@ -54,8 +55,12 @@ export class SpwStrandNode extends SpwNode {
                         );
                 return this;
         }
+    }
 
+    set(key: keyof this, value: SpwNodeKeyValue): this {
+        const _internalRet = this._internalSet(key, value);
         this.setNodeProps();
+        if (_internalRet) return this;
 
         super.set(key, value);
         return this;
@@ -73,22 +78,24 @@ export class SpwStrandNode extends SpwNode {
                 this._tail.setProp('prev', this._head)
             } else {
                 const lastIndex = this._conjunction.length - 1;
-                this._conjunction.reduce(
-                    (prev, curr, i) => {
-                        curr.setProp('prev', prev);
-                        prev.setProp('next', curr);
-                        nodeList.push(curr);
-                        if (i === lastIndex) {
-                            curr.setProp('next', this._tail);
-                            this._tail?.setProp('prev', curr);
-                        }
-                        return curr;
-                    },
-                    this._head,
-                )
+                this._conjunction
+                    .reduce(
+                        (prev, curr, i) => {
+                            curr.setProp('prev', prev);
+                            prev.setProp('next', curr);
+                            nodeList.push(curr);
+                            if (i === lastIndex) {
+                                curr.setProp('next', this._tail);
+                                this._tail?.setProp('prev', curr);
+                            }
+                            return curr;
+                        },
+                        this._head,
+                    )
             }
-            nodeList.push(this._tail);
-            this.setProp('nodes', this._tail);
+
+            this._tail && nodeList.push(this._tail);
+            this.setProp('nodes', nodeList);
         }
     }
 }
