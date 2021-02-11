@@ -1,7 +1,7 @@
 import {SpwNodeKeyValue} from '../spwNode';
-import {SpwBoundaryNode} from './helper/boundary';
+import {SpwBlockNode} from './helper/block';
 
-export class SpwDomainNode extends SpwBoundaryNode {
+export class SpwDomainNode extends SpwBlockNode {
     get body() {
         return this._body;
     }

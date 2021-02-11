@@ -1,15 +1,15 @@
-import {SpwNode, SpwNodeKeyValue} from '../spwNode';
+import {SpwNodeKeyValue} from '../spwNode';
+import {SpwBlockNode} from './helper/block';
 
-export class SpwEssenceNode extends SpwNode {
-    private _body?: Set<SpwNode> = new Set<SpwNode>();
-
+export class SpwEssenceNode extends SpwBlockNode {
     get body() {
         return this._body;
     }
 
     set(key: keyof this, value: SpwNodeKeyValue): this {
         super.set(key, value);
-        // assume this._body exists
+
+        // assume this._body exists as a result of the parent call
         switch (key) {
             case 'body':
                 if (!this._body) break;

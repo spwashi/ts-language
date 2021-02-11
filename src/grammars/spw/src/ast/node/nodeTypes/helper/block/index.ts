@@ -5,7 +5,7 @@ export interface BoundaryNode {
     subjective: SpwNode | undefined;
 }
 
-export class SpwBoundaryNode extends SpwNode {
+export class SpwBlockNode extends SpwNode {
     protected _body?: Set<SpwNode> = new Set<SpwNode>();
 
     get body() {

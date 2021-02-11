@@ -50,5 +50,5 @@
     "prepublish": "npm run build",
     "postpublish": "cd dist || true; cp -rf package.json ../"
   },
-  "version": "1.2.4"
+  "version": "1.2.5"
 }

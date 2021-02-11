@@ -1,6 +1,6 @@
-import {BoundaryNode, SpwBoundaryNode} from './helper/boundary';
+import {BoundaryNode, SpwBlockNode} from './helper/block';
 
 
-export class SpwConceptNode extends SpwBoundaryNode implements BoundaryNode {
+export class SpwConceptNode extends SpwBlockNode implements BoundaryNode {
 
 }
