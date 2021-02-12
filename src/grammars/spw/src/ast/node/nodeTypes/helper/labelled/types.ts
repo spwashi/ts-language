@@ -5,5 +5,14 @@ export interface CanHaveLabel {
 }
 
 export function setLabelledNodeItem(node: CanHaveLabel) {
-    node.label?.setProp('labelledNode', node);
+    const label = node.label;
+
+    if (!(label instanceof SpwNode)) return;
+
+    if (typeof label.setProp !== 'function') {
+        console.log({node, label})
+        console.error('Could not set relationship')
+    }
+
+    label?.setProp('owner', node);
 }

@@ -2,10 +2,6 @@ import {SpwNodeKeyValue} from '../spwNode';
 import {SpwBlockNode} from './helper/block';
 
 export class SpwEssenceNode extends SpwBlockNode {
-    get body() {
-        return this._body;
-    }
-
     set(key: keyof this, value: SpwNodeKeyValue): this {
         super.set(key, value);
 
@@ -14,11 +10,7 @@ export class SpwEssenceNode extends SpwBlockNode {
             case 'body':
                 if (!this._body) break;
 
-                this._body.forEach(
-                    node => {
-                        node.setProp('parent', this)
-                    },
-                )
+                this._body.forEach(node => node.setProp('parent', this))
                 return this;
         }
         return this;

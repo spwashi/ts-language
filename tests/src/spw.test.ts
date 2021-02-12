@@ -9,6 +9,7 @@ import {SpwDomainNode} from '../../src/grammars/spw/src/ast/node/nodeTypes/domai
 import {SpwStrandNode} from '../../src/grammars/spw/src/ast/node/nodeTypes/strandNode';
 import {SpwAnchorNode} from '../../src/grammars/spw/src/ast/node/nodeTypes/anchorNode';
 import {spwNodeConstructors} from '../../src/grammars/spw/src/ast/node';
+import {SpwChannelNode} from '../../src/grammars/spw/src/ast/node/nodeTypes/channelNode';
 
 function fromEntries(iterable: Iterable<any>) {
     return [...iterable].reduce((obj, [key, val]) => {
@@ -46,17 +47,33 @@ test('can generate parser',
                            label:  'concept_1',
                            body:
                                    dedent`
-                                            {
-                                                {_concept_1
-                                                    node_1_0 => 
-                                                        node_1_1
-                                                            => node_1_2_0 node_1_2_1 node_1_2_2
-                                                }
-                                                {_concept_2
-                                                    boon => 
-                                                        boonboon
-                                                }
-                                            }
+{
+    {_anchors-and-phrases
+        &
+        &_
+        &_placeholder
+        anchor
+        anchor-with
+        --
+        boon
+    }
+    {_essence
+        anchor[
+            trait
+            #_status
+            objective => subjective
+            trait-2
+        ]
+    }
+    {_phrases
+        this is a phrase
+    }
+    {_channels
+        #
+        #_channel
+        #_channel_2 => strand
+    }
+}
                                         `,
                        },
                        runtime,
@@ -66,16 +83,24 @@ test('can generate parser',
 
 
          const sorted: {
-             domain: { all: SpwDomainNode[], objective: { [k: string]: SpwNode[] }, subjective: { [k: string]: SpwNode[] }, [k: string]: any },
+             domain: {
+                 all: SpwDomainNode[],
+                 objective: { [k: string]: SpwNode[] },
+                 subjective: { [k: string]: SpwNode[] },
+
+                 [k: string]: any
+             },
+             channel: { all: SpwChannelNode[], [k: string]: any },
              anchor: { all: SpwAnchorNode[], [k: string]: any },
              strand: { all: SpwStrandNode[], [k: string]: any },
              phrase: { all: SpwPhraseNode[], [k: string]: any },
          }         =
                    {
-                       domain: {all: [], objective: {}, subjective: {}},
-                       anchor: {all: []},
-                       strand: {all: []},
-                       phrase: {all: []},
+                       domain:  {all: [], objective: {}, subjective: {}},
+                       anchor:  {all: []},
+                       channel: {all: []},
+                       strand:  {all: []},
+                       phrase:  {all: []},
                    }
          const all = Array.from(runtime.registers.get(Runtime.symbols.all)?.items ?? []).map(_ => _.item);
 
@@ -113,8 +138,13 @@ test('can generate parser',
                                                         .entries(sorted.domain.objective)
                                                         .map(([key, domain]: [string, SpwNode[]]) => [key,
                                                                                                       domain.map(node => node.getProp('owner'))]));
-         const strands = sorted.strand.all.map(strand => strand.getProp('nodes'))
 
-         console.log(strands, objectiveAnchorDomains)
-         ;debugger;
+         const strands     = sorted.strand.all;
+         const strandNodes = strands.map(strand => strand.getProp('nodes'))
+         const anchors     = sorted.anchor.all;
+
+         anchors;
+         strands;
+         strandNodes;
+         debugger;
      });
