@@ -49,6 +49,7 @@ export class SpwStrandNode extends SpwNode {
                                     next.push(curr.node);
                                 }
                                 curr.node.setProp('parent', this);
+                                curr.transport.setProp('parent', this);
                                 return next;
                             },
                             [],
