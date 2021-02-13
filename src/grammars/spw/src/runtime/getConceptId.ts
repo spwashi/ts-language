@@ -4,9 +4,9 @@ export function getConceptId(domain: string, ...label: string[]) {
             .reduce(
                 (prev, curr, i, arr) => {
                     if (i === arr.length - 1) {
-                        return prev + '#' + curr;
+                        return `${prev}#${curr}`;
                     }
-                    return `{_${curr.indexOf(' ') > -1 ? `<${curr}>` : curr}_}`
+                    return `${prev ? prev + '#' : ''}{_${curr.indexOf(' ') > -1 ? `<${curr}>` : curr}}`
                 },
             )
     );
