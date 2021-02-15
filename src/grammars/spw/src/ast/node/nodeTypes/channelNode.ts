@@ -2,10 +2,10 @@ import {SpwNode, SpwNodeKeyValue} from '../spwNode';
 import {setLabelledNodeItem} from './helper/labelled/types';
 
 export class SpwChannelNode extends SpwNode {
-    protected _label?: SpwNode;
+    #_label?: SpwNode;
 
     get label() {
-        return this._label;
+        return this.#_label;
     }
 
     set(key: keyof this, value: SpwNodeKeyValue): this {
@@ -14,7 +14,7 @@ export class SpwChannelNode extends SpwNode {
                 this.setProp('nodes', []);
                 break;
             case 'label':
-                this._label = (value as SpwNode);
+                this.#_label = (value as SpwNode);
                 setLabelledNodeItem(this);
                 return this;
         }

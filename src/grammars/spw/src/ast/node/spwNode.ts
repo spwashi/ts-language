@@ -1,4 +1,4 @@
-import {LineColumnOffset, InternalProps, SpwNodeLocation, UnhydratedSpwNode, InternalPropKey} from '../types';
+import {InternalPropKey, InternalProps, LineColumnOffset, SpwNodeLocation, UnhydratedSpwNode} from '../types';
 
 export type SpwNodeKeyValue = string | number | SpwNode | SpwNodeKeyValue[];
 
@@ -7,34 +7,34 @@ function formatLCO(start: LineColumnOffset) {
 }
 
 
-
 export class SpwNode {
-    readonly _location: SpwNodeLocation;
-    readonly _props: InternalProps =
-                 {
-                     nodes: [],
-                 };
+    readonly #_location: SpwNodeLocation;
+    readonly #_props: InternalProps =
+                  {
+                      nodes: [],
+                  };
     readonly #_node: UnhydratedSpwNode;
 
     constructor(node: UnhydratedSpwNode) {
         const {kind, location} = node;
-        this.#_node            = node;
-        this._kind             = kind;
-        this._location         = location;
+
+        this.#_node     = node;
+        this.#_kind     = kind;
+        this.#_location = location;
     }
 
     get props(): { [p: string]: any } {
-        return this._props;
+        return this.#_props;
     }
 
-    protected _kind: string;
+    #_kind: string;
 
     get kind(): string {
-        return this._kind;
+        return this.#_kind;
     }
 
     set kind(value: string) {
-        this._kind = value;
+        this.#_kind = value;
     }
 
     protected _key?: string;
@@ -45,7 +45,7 @@ export class SpwNode {
     }
 
     get location(): SpwNodeLocation {
-        return this._location;
+        return this.#_location;
     }
 
     set(key: keyof this, value: SpwNodeKeyValue): this {
@@ -60,11 +60,11 @@ export class SpwNode {
     }
 
     setProp(key: InternalPropKey, value: InternalProps[InternalPropKey]) {
-        this._props[key] = value;
+        this.#_props[key] = value;
     }
 
     getProp(key: InternalPropKey) {
-        return this._props[key] ?? undefined;
+        return this.#_props[key] ?? undefined;
     }
 
     toJSON() {
