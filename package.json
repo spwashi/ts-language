@@ -43,13 +43,11 @@
   },
   "scripts": {
     "test": "echo \"no test specified\"",
-    "generate:spw": "node scripts/generate.js",
     "build": "tsc",
     "copypackage": "cp -rf package.json dist",
-    "build:all": "node scripts/generate.js; tsc",
     "np": "yarn run copypackage; cd dist; np --yolo; cd ..;",
     "prepublish": "npm run build",
     "postpublish": "cd dist || true; cp -rf package.json ../"
   },
-  "version": "1.2.12"
+  "version": "1.2.13"
 }
