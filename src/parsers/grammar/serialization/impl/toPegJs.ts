@@ -1,12 +1,14 @@
-import {SerializationContext, Mutator, MutatorMap} from '../core/context';
+import {Mutator, MutatorMap, SerializationContext} from '../core/context';
 import {AnyCombinator, CountableCombinator} from '../../combinators/standard/any';
-import {OneOrMoreCombinator} from '../../combinators/standard/one-or-more';
-import {OptionalCombinator} from '../../combinators/standard/optional';
-import {RegularExpressionCombinator} from '../../combinators/standard/regular-expression';
-import {SequenceCombinator} from '../../combinators/standard/sequence';
-import {StringCombinator} from '../../combinators/standard/string';
-import {RuleReferenceCombinator} from '../../combinators/standard/rule-reference';
-import {ZeroOrMoreCombinator} from '../../combinators/standard/zero-or-more';
+import {
+    OneOrMoreCombinator,
+    OptionalCombinator,
+    RegularExpressionCombinator,
+    RuleReferenceCombinator,
+    SequenceCombinator,
+    StringCombinator,
+    ZeroOrMoreCombinator,
+} from '../../combinators';
 import {getComponentName, getParsingAction, ICombinator, ParsingActionOwner} from '../../combinators/abstract';
 import {Rule} from '../../rules/rule';
 import {Grammar} from '../../grammar';
@@ -18,12 +20,11 @@ const minify = (string: string) => m(string, {
     parse: {bare_returns: true},
 }).code
 
-type P = ICombinator;
 type C = SerializationContext<string>;
 
 const truthy                = (i: any) => !!i;
 const notMissing            = (i: any) => i !== null && i !== undefined;
-const isContextNested       = (context: SerializationContext, depth = 1) => context.nestingLevel > depth;
+
 const isCountableCombinator = (component: RuleComponent | undefined): component is RuleComponent & CountableCombinator => !!(component as unknown as CountableCombinator)?.count;
 const needsParentheses      = (component: RuleComponent, parentContext: SerializationContext | undefined, which: 'component' | 'action' = 'component') => {
     const inGrammar = (i: any) => !!parentContext?.grammar.has(i);
@@ -126,7 +127,7 @@ const serializers                 = [
     ],
     [
         AnyCombinator,
-        async (a: AnyCombinator, context: C): Promise<string> => {
+        async <T extends ICombinator[]>(a: AnyCombinator<T>, context: C): Promise<string> => {
             const options  = a.patterns;
             const filtered = (
                 await Promise.all(
@@ -143,19 +144,19 @@ const serializers                 = [
     ],
     [
         OneOrMoreCombinator,
-        async (a: OneOrMoreCombinator, context: C) => `${await serialize(a.pattern, context)}+`,
+        async <T extends ICombinator>(a: OneOrMoreCombinator<T>, context: C) => `${await serialize(a.pattern, context)}+`,
     ],
     [
         OptionalCombinator,
-        async (a: OptionalCombinator, context: C) => `${await serialize(a.pattern, context)}?`,
+        async <T extends ICombinator>(a: OptionalCombinator<T>, context: C) => `${await serialize(a.pattern, context)}?`,
     ],
     [
         RegularExpressionCombinator,
-        async (a: RegularExpressionCombinator, context: C) => `[${a.chars.replace('\\d', '0-9')}]`,
+        async <T extends string>(a: RegularExpressionCombinator<T>) => `[${a.chars.replace('\\d', '0-9')}]`,
     ],
     [
         SequenceCombinator,
-        async (a: SequenceCombinator, context: C) => {
+        async <T extends ICombinator[]>(a: SequenceCombinator<T>, context: C) => {
             const options = a.patterns;
             const strings = await Promise.all(
                 options.map(async (i) => serialize(i, context)),
@@ -166,15 +167,15 @@ const serializers                 = [
     ],
     [
         StringCombinator,
-        async (a: StringCombinator, context: C) => `"${a.chars}"`,
+        async <T extends string>(a: StringCombinator<T>) => `"${a.chars}"`,
     ],
     [
         RuleReferenceCombinator,
-        async (a: RuleReferenceCombinator, context: C) => a.ruleName,
+        async <T extends string>(a: RuleReferenceCombinator<T>) => a.ruleName,
     ],
     [
         ZeroOrMoreCombinator,
-        async (a: ZeroOrMoreCombinator, context: C) => `${await serialize(a.pattern, context)}*`,
+        async <T extends ICombinator>(a: ZeroOrMoreCombinator<T>, context: C) => `${await serialize(a.pattern, context)}*`,
     ],
 ] as SerializerEntry[];
 const handlers: SerializerEntry[] = serializers.map(([TypeofComponent, serializer]) => [

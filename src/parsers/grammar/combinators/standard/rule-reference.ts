@@ -1,4 +1,4 @@
-import {Combinator, ICombinator} from '../abstract';
+import {Combinator} from '../abstract';
 
 export class RuleReferenceCombinator<P extends string = string, Action = any> extends Combinator<P, Action> {
     get ruleName(): string {
@@ -6,5 +6,7 @@ export class RuleReferenceCombinator<P extends string = string, Action = any> ex
     }
 }
 
-export const referenceTo = (p: string) => new RuleReferenceCombinator(p);
+export function referenceTo(p: string) {
+    return new RuleReferenceCombinator(p);
+}
 

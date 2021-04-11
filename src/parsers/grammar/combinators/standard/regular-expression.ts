@@ -6,4 +6,6 @@ export class RegularExpressionCombinator<Pattern extends string = string, Action
     }
 }
 
-export const regExpLike = (p: string) => new RegularExpressionCombinator(p);
+export function regExpLike(p: string) {
+    return new RegularExpressionCombinator(p);
+}
