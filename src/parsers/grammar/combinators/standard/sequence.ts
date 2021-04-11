@@ -1,12 +1,10 @@
 import {Combinator, ICombinator} from '../abstract';
 import {CountableCombinator} from './any';
 
-interface SequenceProps {patterns: ICombinator[];}
-
 /**
  * A set of patterns, one after the other
  */
-export class SequenceCombinator<Pattern extends ICombinator[] = ICombinator[], Action = any> extends Combinator<Pattern, Action> implements CountableCombinator {
+export class SequenceCombinator<Pattern extends ICombinator[] = [], Action = any> extends Combinator<Pattern, Action> implements CountableCombinator {
     get patterns(): ICombinator[] {
         return this._pattern;
     }
@@ -16,6 +14,6 @@ export class SequenceCombinator<Pattern extends ICombinator[] = ICombinator[], A
     }
 }
 
-export function sequenceOf<P extends ICombinator = ICombinator>(p: P | P[]) {
-    return new SequenceCombinator<P[]>(Array.isArray(p) ? p : [p]);
+export function sequenceOf<P extends ICombinator[]>(p: P) {
+    return new SequenceCombinator<P>(p);
 }
