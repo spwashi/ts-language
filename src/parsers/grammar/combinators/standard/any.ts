@@ -6,7 +6,7 @@ export interface CountableCombinator {count(): number;}
 
 const truthy = (i: any) => !!i;
 
-export class AnyCombinator<P extends ICombinator[] = [], Action = any> extends Combinator<P, Action> implements CountableCombinator {
+export class AnyCombinator<P extends ICombinator[] = ICombinator[], Action = any> extends Combinator<P, Action> implements CountableCombinator {
     get patterns() { return _.flatMap(this._pattern); }
 
     count(filter = truthy): number {

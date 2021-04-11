@@ -4,7 +4,7 @@ import {CountableCombinator} from './any';
 /**
  * A set of patterns, one after the other
  */
-export class SequenceCombinator<Pattern extends ICombinator[] = [], Action = any> extends Combinator<Pattern, Action> implements CountableCombinator {
+export class SequenceCombinator<Pattern extends ICombinator[] = ICombinator[], Action = any> extends Combinator<Pattern, Action> implements CountableCombinator {
     get patterns(): ICombinator[] {
         return this._pattern;
     }
