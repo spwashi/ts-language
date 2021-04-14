@@ -1,6 +1,6 @@
 {
   "name": "@spwashi/language",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Package to ease the development of new grammars using javascript",
   "keywords": [
     "js",

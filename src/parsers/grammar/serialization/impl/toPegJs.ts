@@ -116,7 +116,7 @@ const serializers                 = [
         async (a: Rule, context: C): Promise<string> => {
             const action  = await minify(a.action || '');
             const strings = await Promise.all([
-                                                  `${a.ruleName} = `,
+                                                  `${a.ruleName} "${a.ruleName}"= `,
                                                   await serialize(a.pattern, context),
                                                   action ? `{${action}}`.replace('{{', '{')
                                                                         .replace('}}', '}')
