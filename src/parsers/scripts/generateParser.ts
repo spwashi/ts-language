@@ -4,7 +4,8 @@ import {SerializationContext} from '../grammar/serialization/core';
 import serialize from '../grammar/serialization/core/serialize';
 import toPegJs from '../grammar/serialization/impl/toPegJs';
 
-export async function generateParser(jsPreText: string, grammar: Grammar) {
+type Options = { allowedStartRules?: string[] };
+export async function generateParser(jsPreText: string, grammar: Grammar, options: Options = {}) {
     const context            = new SerializationContext({grammar, serializer: toPegJs});
     const out                = await serialize(grammar, context);
     const pegJsGrammarString =
@@ -14,13 +15,13 @@ export async function generateParser(jsPreText: string, grammar: Grammar) {
                   out,
               ].join('');
 
-    debugger;
     try {
         const parser =
                   peg.generate(pegJsGrammarString, {
-                      output: 'source',
-                      format: 'bare',
-                      cache:  true,
+                      output:            'source',
+                      format:            'bare',
+                      cache:             true,
+                      allowedStartRules: options.allowedStartRules,
                   })
         return {parser, grammar: pegJsGrammarString};
     } catch (e) {
